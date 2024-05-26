@@ -6,6 +6,8 @@ namespace Domain.Entities.Account;
 
 public class Account
 {
+    protected Account() { }
+    
     public Account(string title, string firstName, string lastName, string? middleName, string address, string email, string phoneNumber,
         string bankVerificationNumber, string nationalIdentityNumber, AccountType accountType, string passwordSalt, string passwordHash)
     {

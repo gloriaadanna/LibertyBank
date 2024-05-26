@@ -1,14 +1,13 @@
-﻿version: '3.9'
-
-services:
+﻿services:
   database:
     image: postgres:alpine3.20
     restart: always
     environment:
-      POSTGRES_USER_FILE: 
-      POSTGRES_PASSWORD_FILE: 
+      POSTGRES_USER: gloria
+      POSTGRES_PASSWORD: adanna123
+      POSTGRES_DB: liberty
     ports:
-      - "5434:5432"
+      - "5435:5432"
     volumes:
       - postgres:/var/lib/postgresql/data/
         

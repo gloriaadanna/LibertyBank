@@ -10,8 +10,8 @@ public static class ServiceExtension
 {
     public static IServiceCollection AddDatabaseContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration["PostgreSql:ConnectionString"];
-        var databasePassword = configuration["PostgreSql:DbPassword"];
+        var connectionString = configuration["Database:ConnectionString"];
+        var databasePassword = configuration["Database:DbPassword"];
         var builder = new NpgsqlConnectionStringBuilder(connectionString)
         {
             Password = databasePassword

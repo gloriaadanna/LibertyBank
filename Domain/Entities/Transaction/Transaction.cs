@@ -5,6 +5,8 @@ namespace Domain.Entities.Transaction;
 
 public class Transaction
 {
+    protected Transaction() { }
+    
     public Transaction(TransactionType transactionType, decimal amount, string sourceAccountNumber, DateTime transactionDate, 
         string sourceBank = "Liberty", string? destinationBank = null, string? destinationAccountNumber = null)
     {

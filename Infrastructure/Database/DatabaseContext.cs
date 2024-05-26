@@ -4,12 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext(DbContextOptions options) : DbContext(options)
 {
-    public DatabaseContext(DbContextOptions options) : base(options)
-    {
-    }
-    
     public DbSet<Account> Accounts { get; set; }
     
     public DbSet<Transaction> Transactions { get; set; }
