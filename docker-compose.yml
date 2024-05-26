@@ -1,6 +1,16 @@
-﻿services:
-  liberty:
-    image: liberty
-    build:
-      context: .
-      dockerfile: Liberty/Dockerfile
+﻿version: '3.9'
+
+services:
+  database:
+    image: postgres:alpine3.20
+    restart: always
+    environment:
+      POSTGRES_USER_FILE: 
+      POSTGRES_PASSWORD_FILE: 
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data/
+        
+volumes:
+  postgres:
