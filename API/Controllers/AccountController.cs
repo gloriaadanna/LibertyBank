@@ -32,20 +32,14 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
             return BadRequest("Identifier is not valid");
         }
 
-        Account? account = null;
-        switch (identifierType)
+        Account? account = identifierType switch
         {
-            case IdentifierType.Email:
-                account = await databaseContext.Accounts.FirstOrDefaultAsync(p => p.Email == model.Identifier);
-                break;
-            case IdentifierType.AccountNumber:
-                account = await databaseContext.Accounts.FirstOrDefaultAsync(p => p.AccountNumber == model.Identifier);
-                break;
-            case IdentifierType.PhoneNumber:
-                account = await databaseContext.Accounts.FirstOrDefaultAsync(p => p.PhoneNumber == model.Identifier);
-                break;
-        }
-        
+            IdentifierType.Email => await databaseContext.Accounts.SingleOrDefaultAsync(p => p.Email == model.Identifier),
+            IdentifierType.AccountNumber => await databaseContext.Accounts.SingleOrDefaultAsync(p => p.AccountNumber == model.Identifier),
+            IdentifierType.PhoneNumber => await databaseContext.Accounts.SingleOrDefaultAsync(p => p.PhoneNumber == model.Identifier),
+            _ => null
+        };
+
         if (account is null)
         {
             return NotFound("Customer account not found.");
@@ -70,6 +64,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AccountModel))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     public async Task<ActionResult<AccountModel>> CreateAccount([FromBody] CreateAccountModel model)
     {
         var validationResult = await new CreateAccountModelValidator().ValidateAsync(model);
@@ -137,7 +132,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
             return BadRequest(validationResult.ToString(Constants.ErrorSeparator));
         }
         
-        var existingAccount = await databaseContext.Accounts.FirstOrDefaultAsync(p => p.Id == model.Id);
+        var existingAccount = await databaseContext.Accounts.SingleOrDefaultAsync(p => p.Id == model.Id);
         if (existingAccount is null)
         {
             return NotFound("Customer account not found.");
@@ -174,7 +169,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     public async Task<ActionResult<AccountModel>> GetAccount(Guid id)
     {
-        var account = await databaseContext.Accounts.FirstOrDefaultAsync(p => p.Id == id);
+        var account = await databaseContext.Accounts.SingleOrDefaultAsync(p => p.Id == id);
         if (account is null)
         {
             return NotFound("Customer account not found.");
@@ -203,7 +198,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     public async Task<ActionResult<AccountModel>> GetAccount(string accountNumber)
     {
-        var account = await databaseContext.Accounts.FirstOrDefaultAsync(p => p.AccountNumber == accountNumber);
+        var account = await databaseContext.Accounts.SingleOrDefaultAsync(p => p.AccountNumber == accountNumber);
         if (account is null)
         {
             return NotFound("Customer account not found.");
@@ -229,7 +224,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
     
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AccountModel>))]
-    public async Task<ActionResult<List<AccountModel>>> GetAccount(int? pageNumber = 1, int? pageSize = 20)
+    public async Task<ActionResult<List<AccountModel>>> GetAccount([FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 20)
     {
         var skip = (pageNumber - 1) * pageSize ?? 0;
         var accounts = await databaseContext.Accounts.OrderByDescending(p => p.CreatedAt)
@@ -266,18 +261,16 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
 
     private IdentifierType GetSignInIdentifierType(string identifier)
     {
-        IdentifierType identifierType = IdentifierType.None;
+        var identifierType = IdentifierType.None;
         if (identifier.All(char.IsDigit))
         {
             var identifierLength = identifier.Length;
-            if (identifierLength == 10)
+            identifierType = identifierLength switch
             {
-                identifierType = IdentifierType.AccountNumber;
-            }
-            else if(identifierLength == 13 || identifierLength == 11)
-            {
-                identifierType = IdentifierType.PhoneNumber;
-            }
+                10 => IdentifierType.AccountNumber,
+                13 or 11 => IdentifierType.PhoneNumber,
+                _ => identifierType
+            };
         }
         else if (new EmailAddressAttribute().IsValid(identifier))
         {
