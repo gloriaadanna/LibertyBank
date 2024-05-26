@@ -9,8 +9,8 @@ public static class TokenHelper
     public static string GenerateToken(IConfiguration configuration, Guid customerId)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var secretkey = configuration["JWT:Secret"];
-        var key = System.Text.Encoding.ASCII.GetBytes(secretkey);
+        var secretKey = configuration["JWT:Secret"];
+        var key = System.Text.Encoding.ASCII.GetBytes(secretKey!);
             
         // Security Token Descriptor
         var tokenDescriptor = new SecurityTokenDescriptor

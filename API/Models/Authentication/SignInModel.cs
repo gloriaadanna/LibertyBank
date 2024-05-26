@@ -4,9 +4,9 @@ namespace API.Models.Authentication;
 
 public record SignInModel
 {
-    public string Identifier { get; init; }
+    public string Identifier { get; init; } = default!;
     
-    public string Password { get; init; }
+    public string Password { get; init; } = default!;
 }
 
 public class SignInModelValidator : AbstractValidator<SignInModel>

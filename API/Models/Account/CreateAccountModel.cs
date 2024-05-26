@@ -24,8 +24,8 @@ public record CreateAccountModel
     public string NationalIdentityNumber { get; init; } = default!;
     
     public AccountType AccountType { get; init; }
-    
-    public string Password { get; init; }
+
+    public string Password { get; init; } = default!;
 }
 
 public class CreateAccountModelValidator : AbstractValidator<CreateAccountModel>

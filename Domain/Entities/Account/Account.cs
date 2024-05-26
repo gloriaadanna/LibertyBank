@@ -8,7 +8,7 @@ public class Account
 {
     protected Account() { }
     
-    public Account(string title, string firstName, string lastName, string? middleName, string address, string email, string phoneNumber,
+    public Account(string? title, string firstName, string lastName, string? middleName, string address, string email, string phoneNumber,
         string bankVerificationNumber, string nationalIdentityNumber, AccountType accountType, string passwordSalt, string passwordHash)
     {
         Id = Guid.NewGuid();
@@ -62,12 +62,12 @@ public class Account
     [Required]
     [EnumDataType(typeof(AccountType))]
     public AccountType AccountType { get; private set; }
-    
-    [Required]
-    public string PasswordHash { get; private set; }
+
+    [Required] 
+    public string PasswordHash { get; private set; } = default!;
 
     [Required]
-    public string PasswordSalt { get; private set; }
+    public string PasswordSalt { get; private set; } = default!;
 
     public DateTime CreatedAt { get; private set; }
     
