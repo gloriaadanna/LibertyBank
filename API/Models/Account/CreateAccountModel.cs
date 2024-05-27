@@ -36,7 +36,7 @@ public class CreateAccountModelValidator : AbstractValidator<CreateAccountModel>
         RuleFor(m => m.LastName).NotEmpty();
         RuleFor(m => m.Address).NotEmpty();
         RuleFor(m => m.Email).NotEmpty().EmailAddress();
-        RuleFor(m => m.PhoneNumber).NotEmpty().Length(13).Matches("^[0-9]${13}");
+        RuleFor(m => m.PhoneNumber).NotEmpty().Length(13).Matches("^[0-9]*${13}");
         RuleFor(m => m.BankVerificationNumber).NotEmpty();
         RuleFor(m => m.NationalIdentityNumber).NotEmpty();
         RuleFor(m => m.AccountType).IsInEnum();

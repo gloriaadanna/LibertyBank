@@ -5,6 +5,8 @@ namespace API.Models.Account;
 public record AccountModel
 {
     public Guid Id { get; init; }
+
+    public string AccountNumber { get; init; } = default!;
     
     public string? Title { get; init; }
     

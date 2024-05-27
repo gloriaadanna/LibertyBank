@@ -14,9 +14,9 @@ namespace API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountTransaction(DatabaseContext databaseContext, IConfiguration configuration) : ControllerBase
+public class AccountController(DatabaseContext databaseContext, IConfiguration configuration) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("signin")]
     [AllowAnonymous]
     public async Task<ActionResult<AccountModel>> SignIn([FromBody] SignInModel model)
     {
@@ -105,6 +105,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
         var accountModel = new AccountModel
         {
             Id = account.Id,
+            AccountNumber = account.AccountNumber,
             Title = account.Title,
             FirstName = account.FirstName,
             LastName = account.LastName,
@@ -117,7 +118,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
             NationalIdentityNumber = account.NationalIdentityNumber,
             CreatedAt = account.CreatedAt
         };
-        return CreatedAtAction("", accountModel);
+        return CreatedAtAction(nameof(GetAccount), accountModel);
     }
     
     [HttpPut]
@@ -149,6 +150,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
         var accountModel = new AccountModel
         {
             Id = existingAccount.Id,
+            AccountNumber = existingAccount.AccountNumber,
             Title = existingAccount.Title,
             FirstName = existingAccount.FirstName,
             LastName = existingAccount.LastName,
@@ -178,6 +180,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
         var accountModel = new AccountModel
         {
             Id = account.Id,
+            AccountNumber = account.AccountNumber,
             Title = account.Title,
             FirstName = account.FirstName,
             LastName = account.LastName,
@@ -207,6 +210,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
         var accountModel = new AccountModel
         {
             Id = account.Id,
+            AccountNumber = account.AccountNumber,
             Title = account.Title,
             FirstName = account.FirstName,
             LastName = account.LastName,
@@ -242,6 +246,7 @@ public class AccountTransaction(DatabaseContext databaseContext, IConfiguration 
             var accountModel = new AccountModel
             {
                 Id = account.Id,
+                AccountNumber = account.AccountNumber,
                 Title = account.Title,
                 FirstName = account.FirstName,
                 LastName = account.LastName,
