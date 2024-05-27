@@ -22,10 +22,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    //app.MigrateDatabase();
+    app.MigrateDatabase();
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();
 
