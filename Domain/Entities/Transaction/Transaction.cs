@@ -8,7 +8,7 @@ public class Transaction
     protected Transaction() { }
     
     public Transaction(TransactionType transactionType, decimal amount, string sourceAccountNumber, DateTime transactionDate, 
-        string sourceBank = "Liberty", string? destinationBank = null, string? destinationAccountNumber = null)
+        string sourceBank = "Liberty", string? destinationBank = null, string? destinationAccountNumber = null, string? description = null)
     {
         Id = Guid.NewGuid();
         Type = transactionType;
@@ -36,7 +36,7 @@ public class Transaction
     [Required]
     public decimal Amount { get; private set; }
 
-    public string Description { get; private set; } = default!;
+    public string? Description { get; private set; } = default!;
 
     [Required] 
     public string SourceAccountNumber { get; private set; } = default!;

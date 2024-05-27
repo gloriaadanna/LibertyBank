@@ -76,7 +76,8 @@ public class TransactionController(DatabaseContext databaseContext) : Controller
         //TODO: Evaluate existing  balance to block transactions that will lead to negative balance 
         
         var transaction = new Transaction(model.Type, model.Amount, model.SourceAccountNumber, model.TransactionDate,
-            sourceBank: model.SourceBank, destinationBank: model.DestinationBank, destinationAccountNumber: model.DestinationAccountNumber);
+            sourceBank: model.SourceBank, destinationBank: model.DestinationBank, destinationAccountNumber: model.DestinationAccountNumber,
+            description: model.Description);
         
         databaseContext.Transactions.Add(transaction);
         if (await databaseContext.SaveChangesAsync() <= 0)
