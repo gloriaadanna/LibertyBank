@@ -11,7 +11,7 @@ namespace API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TransactionController(DatabaseContext databaseContext) : ControllerBase
+public class TransactionsController(DatabaseContext databaseContext) : ControllerBase
 {
     [HttpGet("balance/{accountNumber}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AccountBalanceModel>))]

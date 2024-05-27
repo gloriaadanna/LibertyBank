@@ -11,7 +11,7 @@ namespace API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController(DatabaseContext databaseContext) : ControllerBase
+public class AccountsController(DatabaseContext databaseContext) : ControllerBase
 {
     [HttpPost]
     [AllowAnonymous]
